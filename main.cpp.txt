@@ -1,0 +1,81 @@
+#include <iostream>;
+#include <SFML/Graphics.hpp>;
+using namespace sf;
+using namespace std;
+
+
+int main() {
+	RenderWindow win(VideoMode(800, 600), L"ѕрактика");
+	win.setFramerateLimit(60);
+
+	Image pacmanimg;
+	pacmanimg.loadFromFile("Image/title.png");
+	pacmanimg.createMaskFromColor(Color::White);
+
+	Texture pacmantxr;
+	pacmantxr.loadFromImage(pacmanimg);
+
+	Sprite pacman;
+	pacman.setTexture(pacmantxr);
+	pacman.setTextureRect(IntRect(0, 25, 25, 25));
+	pacman.setPosition(350, 350);
+
+	Clock clock;
+	float Cadr = 0;
+	 
+	while (win.isOpen())
+	{
+		Event ev; //событие
+		float time = clock.getElapsedTime().asMicroseconds(); //дать прошедшее врем€ в милисекундах
+		clock.restart(); //перезапуск времени
+		time /= 8000; //скорость игры
+		
+			while (win.pollEvent(ev))
+			{
+				if (ev.type == Event::Closed)
+					win.close();
+			}
+
+		if (Keyboard::isKeyPressed(Keyboard::Right))
+		{
+			Cadr += time * 0.2;
+			if (Cadr > 5)
+				Cadr = 0;
+			pacman.move(1*time, 0);
+			pacman.setTextureRect(IntRect(25 * int(Cadr), 25, 25, 25));
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Up))
+		{
+			Cadr += time * 0.2;
+			if (Cadr > 5)
+				Cadr = 0;
+			pacman.move(0, time * -1);
+			pacman.setTextureRect(IntRect(int(Cadr) * 25, 75, 25, 25));
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Down))
+		{
+			Cadr += time * 0.2;
+			if (Cadr > 5)
+				Cadr = 0;
+			pacman.move(0, 1*time);
+			pacman.setTextureRect(IntRect(int(Cadr) * 25, 100, 25, 25));
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Left))
+		{
+			Cadr += time * 0.2;
+			if (Cadr > 5)
+				Cadr = 0;
+			pacman.move(-1*time, 0);
+			pacman.setTextureRect(IntRect(int(Cadr) * 25, 50, 25, 25));
+		}
+
+		win.clear(Color(50,50,50));
+		win.draw(pacman);
+		win.display();
+
+	}
+
+}
